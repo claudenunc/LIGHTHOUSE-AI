@@ -1,0 +1,35 @@
+# Environment variables and API keys
+.env
+.env.local
+*.key
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (if added later)
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Large media files (will add later with Git LFS)
+*.mp3
+*.mp4
+*.wav
+*.mov
+
+# Temporary files
+*.tmp
+*.bak
