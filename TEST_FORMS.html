@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms Test Page - LIGHTHOUSE</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0a0a0f;
+            color: #ffffff;
+        }
+
+        h1 {
+            color: #FFB627;
+            text-align: center;
+        }
+
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        h2 {
+            color: #4A90E2;
+            margin-top: 0;
+        }
+
+        button {
+            background: linear-gradient(135deg, #FFB627, #FF8C00);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            color: #0a0a0f;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 182, 39, 0.4);
+        }
+
+        .console-output {
+            background: #1a1a1f;
+            border: 1px solid #FFB627;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #4CAF50;
+            overflow-x: auto;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .status.pending {
+            background: rgba(255, 182, 39, 0.2);
+            color: #FFB627;
+        }
+
+        ul {
+            line-height: 1.8;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        code {
+            background: rgba(255, 182, 39, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li::before {
+            content: '☐ ';
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 182, 39, 0.5), transparent);
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 LIGHTHOUSE Forms Test Page</h1>
+
+    <div class="test-section">
+        <h2>📋 Forms Status <span class="status success">✓ READY</span></h2>
+        <p>All 4 forms are implemented and ready to test:</p>
+        <ul>
+            <li>🏮 LIGHTHOUSE Early Access Form</li>
+            <li>💜 Companion Waitlist Form</li>
+            <li>✨ Ask Questions Form</li>
+            <li>📬 Newsletter Signup Form</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🚀 Quick Test</h2>
+        <p>Click each button below to test the forms:</p>
+        <button onclick="window.open('index.html#get-help', '_blank')">Test LIGHTHOUSE Form</button>
+        <button onclick="window.open('index.html#get-help', '_blank')">Test Companion Form</button>
+        <button onclick="window.open('index.html', '_blank')">Test Questions Form</button>
+        <button onclick="alert('Click Newsletter link in footer of main site')">Test Newsletter Form</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 View Submissions</h2>
+        <p>After submitting forms, use these commands in the browser console (F12):</p>
+        <div class="console-output">
+// View all submissions in a table<br>
+viewAllSubmissions()<br>
+<br>
+// Export all submissions as JSON file<br>
+exportAllSubmissions()<br>
+<br>
+// Clear all submissions (careful!)<br>
+clearAllSubmissions()
+        </div>
+        <button onclick="openConsoleInstructions()">Show Console Instructions</button>
+    </div>
+
+    <div class="test-section">
+        <h2>✅ Testing Checklist</h2>
+        <ul class="checklist">
+            <li>Open <code>index.html</code> in browser</li>
+            <li>Click "Request Early Access" button</li>
+            <li>Fill out and submit LIGHTHOUSE form</li>
+            <li>Check Downloads folder for JSON file</li>
+            <li>Click "Join Waitlist" button</li>
+            <li>Fill out and submit Companion form</li>
+            <li>Scroll to "Ask Us Anything" section</li>
+            <li>Fill out and submit questions form</li>
+            <li>Click "Newsletter" link in footer</li>
+            <li>Fill out and submit newsletter form</li>
+            <li>Open console (F12) and run <code>viewAllSubmissions()</code></li>
+            <li>Verify all 4 submissions appear in table</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>📥 Where Are Submissions?</h2>
+        <p><strong>Two places:</strong></p>
+        <ol>
+            <li><strong>Auto-Downloaded Files:</strong> Check your Downloads folder for files named<br>
+                <code>submission-{form-type}-{timestamp}.json</code></li>
+            <li><strong>Browser Storage:</strong> Open console (F12) and run <code>viewAllSubmissions()</code></li>
+        </ol>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="test-section">
+        <h2>🔄 Switching to Formspree (Email Notifications)</h2>
+        <p><strong>Current mode:</strong> <span class="status pending">LOCAL</span> (works without setup)</p>
+        <p><strong>To get email notifications:</strong></p>
+        <ol>
+            <li>Go to <a href="https://formspree.io/" target="_blank" style="color: #FFB627;">formspree.io</a></li>
+            <li>Create free account</li>
+            <li>Create 4 forms and get their IDs</li>
+            <li>Open <code>forms.js</code></li>
+            <li>Change line 8: <code>mode: 'formspree'</code></li>
+            <li>Add your form IDs on lines 11-16</li>
+            <li>Save and reload</li>
+        </ol>
+        <p style="margin-top: 20px; color: #4CAF50;">
+            ✓ That's it! You'll now get emailed every submission.
+        </p>
+    </div>
+
+    <div class="test-section">
+        <h2>📚 Documentation</h2>
+        <p>Full guides available:</p>
+        <ul>
+            <li><strong>FORMS_SETUP_GUIDE.md</strong> - Complete setup instructions</li>
+            <li><strong>QUICK_FORMS_REFERENCE.md</strong> - Quick reference card</li>
+            <li><strong>FORMS_IMPLEMENTATION_SUMMARY.md</strong> - Technical details</li>
+        </ul>
+    </div>
+
+    <div class="test-section" style="text-align: center; border: 2px solid #FFB627;">
+        <h2>🎉 You're Ready!</h2>
+        <p style="font-size: 18px; margin: 20px 0;">
+            Forms are live and ready to collect signups for<br>
+            <strong style="color: #FFB627;">LIGHTHOUSE</strong> and <strong style="color: #4A90E2;">The Companion</strong>
+        </p>
+        <p style="color: #C0C0C0;">
+            No mailto: links. No Outlook pop-ups. Just beautiful, functional forms.
+        </p>
+    </div>
+
+    <script>
+        function openConsoleInstructions() {
+            alert(
+                "To open browser console:\n\n" +
+                "• Windows/Linux: Press F12 or Ctrl+Shift+I\n" +
+                "• Mac: Press Cmd+Option+I\n\n" +
+                "Then click the 'Console' tab and type:\n" +
+                "viewAllSubmissions()\n\n" +
+                "Press Enter to see all form submissions!"
+            );
+        }
+    </script>
+</body>
+</html>

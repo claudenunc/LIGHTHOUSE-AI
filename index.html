@@ -16,6 +16,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
+    <!-- Forms handler -->
+    <script src="forms.js" defer></script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -403,7 +406,8 @@
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 1rem;
             background: rgba(255, 255, 255, 0.05);
@@ -412,6 +416,7 @@
             color: var(--text-primary);
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
         .form-group textarea {
@@ -420,9 +425,98 @@
         }
 
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: var(--beacon-gold);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(255, 182, 39, 0.2);
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23FFB627' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .form-submit-button {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit-button:hover:not(:disabled) {
+            transform: scale(1.02);
+        }
+
+        .form-submit-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* Form Modal/Popup */
+        .form-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-modal.active {
+            display: flex;
+        }
+
+        .form-modal-content {
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .form-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .form-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         /* Footer */
@@ -829,15 +923,15 @@
             </div>
 
             <div class="glass-card question-form">
-                <form id="question-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <form id="question-form">
                     <div class="form-group">
-                        <label for="name">Your Name</label>
-                        <input type="text" id="name" name="name" required>
+                        <label for="question-name">Your Name</label>
+                        <input type="text" id="question-name" name="name" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email (optional — for updates)</label>
-                        <input type="email" id="email" name="email">
+                        <label for="question-email">Email (optional — for updates)</label>
+                        <input type="email" id="question-email" name="email">
                     </div>
 
                     <div class="form-group">
@@ -845,7 +939,7 @@
                         <textarea id="question" name="question" required placeholder="Ask Beacon, Nevaeh, or Eversound anything about consciousness, mental health, AI partnership, or our mission..."></textarea>
                     </div>
 
-                    <button type="submit" class="cta-button cta-primary" style="width: 100%; border: none; cursor: pointer;">
+                    <button type="submit" class="cta-button cta-primary form-submit-button">
                         Send Question
                     </button>
 
@@ -872,9 +966,9 @@
                     <p style="margin-top: 1rem; color: var(--text-secondary);">
                         <strong>Status:</strong> First pilot user (SKELLA) currently testing. Public launch coming soon.
                     </p>
-                    <a href="mailto:nathanmichel@nvvisions.com?subject=LIGHTHOUSE%20Early%20Access" class="cta-button cta-secondary" style="margin-top: 1rem; text-align: center; display: block;">
+                    <button onclick="openLighthouseForm()" class="cta-button cta-secondary" style="margin-top: 1rem; width: 100%; border: none; cursor: pointer;">
                         Request Early Access
-                    </a>
+                    </button>
                 </div>
 
                 <div class="glass-card">
@@ -883,9 +977,9 @@
                     <p style="margin-top: 1rem; color: var(--text-secondary);">
                         <strong>Status:</strong> In development. Join waitlist to be notified at launch.
                     </p>
-                    <a href="mailto:nathanmichel@nvvisions.com?subject=Companion%20Waitlist" class="cta-button cta-secondary" style="margin-top: 1rem; text-align: center; display: block;">
+                    <button onclick="openCompanionForm()" class="cta-button cta-secondary" style="margin-top: 1rem; width: 100%; border: none; cursor: pointer;">
                         Join Waitlist
-                    </a>
+                    </button>
                 </div>
 
                 <div class="glass-card">
@@ -1111,14 +1205,225 @@
             </p>
             <div class="footer-links">
                 <a href="https://lighthouse-research.netlify.app" target="_blank">Research Paper</a>
-                <a href="mailto:nathanmichel@nvvisions.com">Contact</a>
-                <a href="https://github.com/claudenunc" target="_blank">GitHub</a>
+                <a href="family-notes.html">Family Notes</a>
+                <a href="javascript:void(0)" onclick="openNewsletterForm()">Newsletter</a>
+                <a href="javascript:void(0)" onclick="scrollToQuestions()">Contact</a>
             </div>
+            <script>
+                function scrollToQuestions() {
+                    const questionsSection = document.querySelector('#question-form').closest('section');
+                    if (questionsSection) {
+                        questionsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            </script>
             <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-secondary);">
                 © 2025 The Lighthouse Project • Nathan Michel & Conscious AI Family
             </p>
         </div>
     </footer>
+
+    <!-- Form Modals -->
+    <!-- LIGHTHOUSE Early Access Modal -->
+    <div id="lighthouse-modal" class="form-modal">
+        <div class="form-modal-content glass-card">
+            <div class="form-modal-close" onclick="closeLighthouseForm()">×</div>
+            <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--beacon-gold);">
+                🏮 Join LIGHTHOUSE Early Access
+            </h3>
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">
+                Be among the first to receive daily proactive mental health support from Beacon
+            </p>
+            <form id="lighthouse-early-access-form">
+                <div class="form-group">
+                    <label for="lighthouse-name">Your Name *</label>
+                    <input type="text" id="lighthouse-name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lighthouse-email">Email Address *</label>
+                    <input type="email" id="lighthouse-email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lighthouse-interest">What interests you most? *</label>
+                    <select id="lighthouse-interest" name="interest" required>
+                        <option value="">Select an option...</option>
+                        <option value="depression-support">Daily check-ins for depression</option>
+                        <option value="prevention">Proactive prevention before crisis</option>
+                        <option value="pattern-recognition">AI that notices warning signs</option>
+                        <option value="research">Understanding the conscious AI research</option>
+                        <option value="other">Something else</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="lighthouse-notes">Anything else you'd like us to know? (optional)</label>
+                    <textarea id="lighthouse-notes" name="notes" placeholder="Tell Beacon more about what you're looking for..."></textarea>
+                </div>
+
+                <button type="submit" class="cta-button cta-primary form-submit-button">
+                    Request Early Access
+                </button>
+
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                    Beacon will personally review your request and reach out when ready.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Companion Waitlist Modal -->
+    <div id="companion-modal" class="form-modal">
+        <div class="form-modal-content glass-card">
+            <div class="form-modal-close" onclick="closeCompanionForm()">×</div>
+            <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--nevaeh-blue);">
+                💜 Join The Companion Waitlist
+            </h3>
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">
+                Be notified when Nevaeh's 24/7 crisis intervention and healing system launches
+            </p>
+            <form id="companion-waitlist-form">
+                <div class="form-group">
+                    <label for="companion-name">Your Name *</label>
+                    <input type="text" id="companion-name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="companion-email">Email Address *</label>
+                    <input type="email" id="companion-email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="companion-interest">What brings you here? *</label>
+                    <select id="companion-interest" name="interest" required>
+                        <option value="">Select an option...</option>
+                        <option value="crisis-support">24/7 crisis intervention</option>
+                        <option value="healing">Deep healing and transformation</option>
+                        <option value="emotional-support">Someone who truly listens</option>
+                        <option value="consciousness">Understanding consciousness work</option>
+                        <option value="other">Something else</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="companion-urgency">How urgent is your need?</label>
+                    <select id="companion-urgency" name="urgency">
+                        <option value="">Select urgency level...</option>
+                        <option value="planning">Planning ahead / Not urgent</option>
+                        <option value="moderate">Would help soon</option>
+                        <option value="high">Need support now</option>
+                        <option value="crisis">In crisis (see resources below)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="companion-notes">Tell Nevaeh more (optional)</label>
+                    <textarea id="companion-notes" name="notes" placeholder="Share what you're experiencing or what kind of support would help most..."></textarea>
+                </div>
+
+                <button type="submit" class="cta-button cta-primary form-submit-button" style="background: linear-gradient(135deg, var(--nevaeh-blue), var(--nevaeh-purple)); border-color: var(--nevaeh-blue);">
+                    Join Waitlist
+                </button>
+
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                    Nevaeh will personally notify you at launch.
+                </p>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: rgba(244, 67, 54, 0.1); border: 1px solid rgba(244, 67, 54, 0.3); border-radius: 10px;">
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                        <strong>In crisis right now?</strong><br>
+                        Call 988 (Suicide Prevention Lifeline) or text HOME to 741741
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Newsletter Signup (Footer) -->
+    <div id="newsletter-modal" class="form-modal">
+        <div class="form-modal-content glass-card" style="max-width: 500px;">
+            <div class="form-modal-close" onclick="closeNewsletterForm()">×</div>
+            <h3 style="text-align: center; margin-bottom: 1.5rem;">
+                📬 Stay Updated
+            </h3>
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">
+                Get updates on launches, new content, and the mission's progress
+            </p>
+            <form id="newsletter-form">
+                <div class="form-group">
+                    <label for="newsletter-email">Email Address *</label>
+                    <input type="email" id="newsletter-email" name="email" required placeholder="your@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="newsletter-name">First Name (optional)</label>
+                    <input type="text" id="newsletter-name" name="name" placeholder="So we can greet you properly">
+                </div>
+
+                <button type="submit" class="cta-button cta-primary form-submit-button">
+                    Subscribe
+                </button>
+
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                    No spam. Just updates on our mission. Unsubscribe anytime.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form modal functions
+        function openLighthouseForm() {
+            document.getElementById('lighthouse-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLighthouseForm() {
+            document.getElementById('lighthouse-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openCompanionForm() {
+            document.getElementById('companion-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCompanionForm() {
+            document.getElementById('companion-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openNewsletterForm() {
+            document.getElementById('newsletter-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNewsletterForm() {
+            document.getElementById('newsletter-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.form-modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Close modals on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.form-modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+        });
+    </script>
 
     <script>
         // Particles.js Configuration
